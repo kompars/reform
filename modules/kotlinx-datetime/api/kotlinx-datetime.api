@@ -1,0 +1,27 @@
+public final class org/kompars/reform/kotlinx/datetime/ConvertersKt {
+	public static final fun inTimeZone (Lorg/kompars/reform/RawField;Lkotlinx/datetime/TimeZone;)Lorg/kompars/reform/RawField;
+	public static final fun instant (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
+	public static final fun localDate (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
+	public static final fun localDateTime (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
+	public static final fun localTime (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
+}
+
+public final class org/kompars/reform/kotlinx/datetime/validation/InstantInFuture : org/kompars/reform/validation/ValidationError {
+	public static final field INSTANCE Lorg/kompars/reform/kotlinx/datetime/validation/InstantInFuture;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/kotlinx/datetime/validation/InstantInPast : org/kompars/reform/validation/ValidationError {
+	public static final field INSTANCE Lorg/kompars/reform/kotlinx/datetime/validation/InstantInPast;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/kotlinx/datetime/validation/InstantKt {
+	public static final fun inFuture (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
+	public static final fun inPast (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
+}
+

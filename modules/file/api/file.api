@@ -1,0 +1,139 @@
+public final class org/kompars/reform/file/BinarySize : java/lang/Comparable {
+	public static final field Companion Lorg/kompars/reform/file/BinarySize$Companion;
+	public static final synthetic fun box-impl (J)Lorg/kompars/reform/file/BinarySize;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-wImTwrY (J)I
+	public static fun compareTo-wImTwrY (JJ)I
+	public static fun constructor-impl (J)J
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (JLjava/lang/Object;)Z
+	public static final fun equals-impl0 (JJ)Z
+	public final fun getBytes ()J
+	public fun hashCode ()I
+	public static fun hashCode-impl (J)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (J)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()J
+}
+
+public final class org/kompars/reform/file/BinarySize$Companion {
+	public final fun getGigaBytes-HtMUX4o (I)J
+	public final fun getKiloBytes-HtMUX4o (I)J
+	public final fun getMegaBytes-HtMUX4o (I)J
+}
+
+public abstract interface class org/kompars/reform/file/FileMetadata {
+	public abstract fun getExtension ()Ljava/lang/String;
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getSize ()J
+}
+
+public abstract interface class org/kompars/reform/file/ImageMetadata {
+	public abstract fun getHeight ()Ljava/lang/Integer;
+	public abstract fun getWidth ()Ljava/lang/Integer;
+}
+
+public final class org/kompars/reform/file/validation/FileKt {
+	public static final fun extension (Lorg/kompars/reform/SingleField;[Ljava/lang/String;)Lorg/kompars/reform/SingleField;
+	public static final fun maxSize-5CwQr4s (Lorg/kompars/reform/SingleField;J)Lorg/kompars/reform/SingleField;
+	public static final fun minSize-5CwQr4s (Lorg/kompars/reform/SingleField;J)Lorg/kompars/reform/SingleField;
+}
+
+public final class org/kompars/reform/file/validation/FileSizeTooBig : org/kompars/reform/validation/ValidationError {
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-tuoCs5k ()J
+	public final fun copy-wImTwrY (J)Lorg/kompars/reform/file/validation/FileSizeTooBig;
+	public static synthetic fun copy-wImTwrY$default (Lorg/kompars/reform/file/validation/FileSizeTooBig;JILjava/lang/Object;)Lorg/kompars/reform/file/validation/FileSizeTooBig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxSize-tuoCs5k ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/FileSizeTooSmall : org/kompars/reform/validation/ValidationError {
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-tuoCs5k ()J
+	public final fun copy-wImTwrY (J)Lorg/kompars/reform/file/validation/FileSizeTooSmall;
+	public static synthetic fun copy-wImTwrY$default (Lorg/kompars/reform/file/validation/FileSizeTooSmall;JILjava/lang/Object;)Lorg/kompars/reform/file/validation/FileSizeTooSmall;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMinSize-tuoCs5k ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageHeightTooBig : org/kompars/reform/validation/ValidationError {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lorg/kompars/reform/file/validation/ImageHeightTooBig;
+	public static synthetic fun copy$default (Lorg/kompars/reform/file/validation/ImageHeightTooBig;IILjava/lang/Object;)Lorg/kompars/reform/file/validation/ImageHeightTooBig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxHeight ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageHeightTooSmall : org/kompars/reform/validation/ValidationError {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lorg/kompars/reform/file/validation/ImageHeightTooSmall;
+	public static synthetic fun copy$default (Lorg/kompars/reform/file/validation/ImageHeightTooSmall;IILjava/lang/Object;)Lorg/kompars/reform/file/validation/ImageHeightTooSmall;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMinHeight ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageHeightUnknown : org/kompars/reform/validation/ValidationError {
+	public static final field INSTANCE Lorg/kompars/reform/file/validation/ImageHeightUnknown;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageKt {
+	public static final fun maxHeight (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
+	public static final fun maxWidth (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
+	public static final fun minHeight (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
+	public static final fun minWidth (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
+}
+
+public final class org/kompars/reform/file/validation/ImageWidthTooBig : org/kompars/reform/validation/ValidationError {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lorg/kompars/reform/file/validation/ImageWidthTooBig;
+	public static synthetic fun copy$default (Lorg/kompars/reform/file/validation/ImageWidthTooBig;IILjava/lang/Object;)Lorg/kompars/reform/file/validation/ImageWidthTooBig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxWidth ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageWidthTooSmall : org/kompars/reform/validation/ValidationError {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lorg/kompars/reform/file/validation/ImageWidthTooSmall;
+	public static synthetic fun copy$default (Lorg/kompars/reform/file/validation/ImageWidthTooSmall;IILjava/lang/Object;)Lorg/kompars/reform/file/validation/ImageWidthTooSmall;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMinWidth ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/ImageWidthUnknown : org/kompars/reform/validation/ValidationError {
+	public static final field INSTANCE Lorg/kompars/reform/file/validation/ImageWidthUnknown;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/kompars/reform/file/validation/InvalidFileExtension : org/kompars/reform/validation/ValidationError {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public final fun component1 ()Ljava/lang/Iterable;
+	public final fun copy (Ljava/lang/Iterable;)Lorg/kompars/reform/file/validation/InvalidFileExtension;
+	public static synthetic fun copy$default (Lorg/kompars/reform/file/validation/InvalidFileExtension;Ljava/lang/Iterable;ILjava/lang/Object;)Lorg/kompars/reform/file/validation/InvalidFileExtension;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExtensions ()Ljava/lang/Iterable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
