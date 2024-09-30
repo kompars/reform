@@ -5,16 +5,16 @@ import org.kompars.reform.validation.*
 
 internal class RawFieldImpl<T : Any>(
     private val form: FormImpl,
-    private val converter: (String?) -> T?,
+    private val converter: suspend (String?) -> T?,
 ) : SingleField<T?>, RawField<T> {
-    override fun <U : Any> convert(block: (T) -> U): RawField<U> {
+    override fun <U : Any> convert(block: suspend (T) -> U): RawField<U> {
         return RawFieldImpl(
             form = form,
-            converter = { converter(it)?.let(block) },
+            converter = { converter(it)?.let { block(it) } },
         )
     }
 
-    override fun required(block: () -> Boolean): OptionalField<T> {
+    override fun required(block: suspend () -> Boolean): OptionalField<T> {
         return OptionalFieldImpl(
             form = form,
             converter = converter,
@@ -30,7 +30,7 @@ internal class RawFieldImpl<T : Any>(
         )
     }
 
-    override fun default(block: () -> T): RequiredField<T> {
+    override fun default(block: suspend () -> T): RequiredField<T> {
         return RequiredFieldImpl(
             form = form,
             converter = converter,
@@ -46,7 +46,7 @@ internal class RawFieldImpl<T : Any>(
         )
     }
 
-    override fun addValidator(block: (T) -> ValidationError?): OptionalField<T> {
+    override fun addValidator(block: suspend (T) -> ValidationError?): OptionalField<T> {
         return OptionalFieldImpl(
             form = form,
             converter = converter,

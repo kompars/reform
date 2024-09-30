@@ -4,12 +4,12 @@ import org.kompars.reform.*
 import org.kompars.reform.validation.*
 
 internal class FormImpl(
-    override val rawValues: Map<String, List<String?>>,
+    //override val rawValues: Map<String, List<String?>>,
     override val name: String?,
     override val id: String?,
 ) : Form {
-    private val providers = mutableMapOf<String, (List<String?>) -> FieldResult>()
-    private val validators = mutableMapOf<String?, MutableList<() -> ValidationError?>>()
+    private val providers = mutableMapOf<String, suspend (List<String?>) -> FieldResult>()
+    private val validators = mutableMapOf<String?, MutableList<suspend () -> ValidationError?>>()
 
     private val results = mutableMapOf<String, FieldResult>()
 
@@ -34,18 +34,18 @@ internal class FormImpl(
     override val isValid: Boolean
         get() = errors.isEmpty()
 
-    override fun <T : Any> createField(trim: Boolean, block: (String) -> T?): RawField<T> {
+    override fun <T : Any> createField(trim: Boolean, block: suspend (String) -> T?): RawField<T> {
         ensureNotProcessed()
 
         return RawFieldImpl(this) { value ->
             when (value) {
                 null -> null
-                else -> value.let { if (trim) it.trim() else it }.ifEmpty { null }?.let(block)
+                else -> value.let { if (trim) it.trim() else it }.ifEmpty { null }?.let { block(it) }
             }
         }
     }
 
-    override fun addValidator(name: String?, block: () -> ValidationError?) {
+    override fun addValidator(name: String?, block: suspend () -> ValidationError?) {
         ensureNotProcessed()
         validators.getOrPut(name) { mutableListOf() } += block
     }
@@ -55,7 +55,7 @@ internal class FormImpl(
         _errors.getOrPut(name) { mutableListOf() } += error
     }
 
-    internal fun <T> register(name: String, provider: (List<String?>) -> FieldResult): Lazy<T> {
+    internal fun <T> register(name: String, provider: suspend (List<String?>) -> FieldResult): Lazy<T> {
         ensureNotProcessed()
 
         if (providers.containsKey(name)) {
@@ -84,7 +84,7 @@ internal class FormImpl(
         }
     }
 
-    private fun ensureProcessed() {
+    override suspend fun process(rawValues: Map<String, List<String?>>) {
         if (isProcessed || isProcessing) {
             return
         }
@@ -114,6 +114,12 @@ internal class FormImpl(
 
         isProcessing = false
         isProcessed = true
+    }
+
+    private fun ensureProcessed() {
+        if (!isProcessed) {
+            throw IllegalStateException("Form not processed")
+        }
     }
 
     private fun ensureNotProcessed() {

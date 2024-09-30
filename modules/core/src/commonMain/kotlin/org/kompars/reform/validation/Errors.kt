@@ -5,6 +5,10 @@ public open class ValidationError(
     public val params: Map<String, Any?> = emptyMap(),
 ) {
     public constructor(message: String, vararg params: Pair<String, Any?>) : this(message, mapOf(*params))
+
+    override fun toString(): String {
+        return "ValidationError(message=$message, params=$params)"
+    }
 }
 
 public data object MissingValue : ValidationError("missing_value")

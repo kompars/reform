@@ -5,12 +5,12 @@ import org.kompars.reform.validation.*
 
 internal class CollectionFieldImpl<T>(
     private val form: FormImpl,
-    private val converter: (String?) -> T?,
-    private val defaultValueProvider: () -> T,
-    private val itemValidators: List<(T & Any) -> ValidationError?> = mutableListOf(),
-    private val listValidators: List<(List<T>) -> ValidationError?> = mutableListOf(),
+    private val converter: suspend (String?) -> T?,
+    private val defaultValueProvider: suspend () -> T,
+    private val itemValidators: List<suspend (T & Any) -> ValidationError?> = mutableListOf(),
+    private val listValidators: List<suspend (List<T>) -> ValidationError?> = mutableListOf(),
 ) : CollectionField<T> {
-    override fun addValidator(block: (List<T>) -> ValidationError?): CollectionField<T> {
+    override fun addValidator(block: suspend (List<T>) -> ValidationError?): CollectionField<T> {
         return CollectionFieldImpl(
             form = form,
             converter = converter,

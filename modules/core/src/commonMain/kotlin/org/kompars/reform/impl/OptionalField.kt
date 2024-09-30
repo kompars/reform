@@ -5,11 +5,11 @@ import org.kompars.reform.validation.*
 
 internal class OptionalFieldImpl<T : Any>(
     private val form: FormImpl,
-    private val converter: (String?) -> T?,
-    private val defaultValueProvider: () -> T? = { null },
-    private val validators: List<(T) -> ValidationError?> = mutableListOf(),
+    private val converter: suspend (String?) -> T?,
+    private val defaultValueProvider: suspend () -> T? = { null },
+    private val validators: List<suspend (T) -> ValidationError?> = mutableListOf(),
 ) : OptionalField<T>, SingleField<T?> {
-    override fun required(block: () -> Boolean): OptionalField<T> {
+    override fun required(block: suspend () -> Boolean): OptionalField<T> {
         return OptionalFieldImpl(
             form = form,
             converter = converter,
@@ -27,7 +27,7 @@ internal class OptionalFieldImpl<T : Any>(
         )
     }
 
-    override fun default(block: () -> T): RequiredField<T> {
+    override fun default(block: suspend () -> T): RequiredField<T> {
         return RequiredFieldImpl(
             form = form,
             converter = converter,
@@ -45,7 +45,7 @@ internal class OptionalFieldImpl<T : Any>(
         )
     }
 
-    override fun addValidator(block: (T) -> ValidationError?): OptionalField<T> {
+    override fun addValidator(block: suspend (T) -> ValidationError?): OptionalField<T> {
         return OptionalFieldImpl(
             form = form,
             converter = converter,

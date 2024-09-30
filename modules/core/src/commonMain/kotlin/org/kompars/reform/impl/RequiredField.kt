@@ -5,9 +5,9 @@ import org.kompars.reform.validation.*
 
 internal class RequiredFieldImpl<T : Any>(
     private val form: FormImpl,
-    private val converter: (String?) -> T?,
-    private val defaultValueProvider: () -> T,
-    private val validators: List<(T) -> ValidationError?> = mutableListOf(),
+    private val converter: suspend (String?) -> T?,
+    private val defaultValueProvider: suspend () -> T,
+    private val validators: List<suspend (T) -> ValidationError?> = mutableListOf(),
 ) : RequiredField<T> {
     override fun collection(): CollectionField<T> {
         return CollectionFieldImpl(
@@ -18,7 +18,7 @@ internal class RequiredFieldImpl<T : Any>(
         )
     }
 
-    override fun addValidator(block: (T) -> ValidationError?): RequiredField<T> {
+    override fun addValidator(block: suspend (T) -> ValidationError?): RequiredField<T> {
         return RequiredFieldImpl(
             form = form,
             converter = converter,

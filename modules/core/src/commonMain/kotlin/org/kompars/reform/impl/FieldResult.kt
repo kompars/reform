@@ -8,15 +8,15 @@ internal sealed interface FieldResult {
     data class Errors(val index: Int? = null, val errors: List<ValidationError>) : FieldResult
 }
 
-internal fun <T : Any> getResult(
+internal suspend fun <T : Any> getResult(
     rawValue: String?,
     index: Int?,
-    converter: (String?) -> T?,
-    defaultValueProvider: () -> T?,
-    validators: List<(T) -> ValidationError?>,
+    converter: suspend (String?) -> T?,
+    defaultValueProvider: suspend () -> T?,
+    validators: List<suspend (T) -> ValidationError?>,
 ): FieldResult {
     val convertedValue = try {
-        rawValue?.let(converter)
+        rawValue?.let { converter(it) }
     } catch (e: ConversionFailedException) {
         return FieldResult.Errors(index, listOf(ValidationError(e.error)))
     } catch (e: Exception) {
@@ -51,7 +51,7 @@ internal fun <T : Any> getResult(
     }
 }
 
-internal fun <T : Any> validate(value: T, validator: (T) -> ValidationError?): ValidationError? {
+internal suspend fun <T : Any> validate(value: T, validator: suspend (T) -> ValidationError?): ValidationError? {
     return try {
         validator(value)
     } catch (e: InvalidFormFieldException) {

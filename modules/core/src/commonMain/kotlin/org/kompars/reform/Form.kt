@@ -7,15 +7,16 @@ public interface Form {
     public val name: String?
     public val id: String?
 
-    public val rawValues: Map<String, List<Any?>>
+    //public val rawValues: Map<String, List<Any?>>
     public val values: Map<String, Any?>
 
     public val errors: Map<String?, List<ValidationError>>
     public val isValid: Boolean
 
-    public fun <T : Any> createField(trim: Boolean = true, block: (String) -> T?): RawField<T>
+    public fun <T : Any> createField(trim: Boolean = true, block: suspend (String) -> T?): RawField<T>
+    public suspend fun process(rawValues: Map<String, List<String?>>)
 
-    public fun addValidator(name: String? = null, block: () -> ValidationError?)
+    public fun addValidator(name: String? = null, block: suspend () -> ValidationError?)
     public fun addError(name: String? = null, error: ValidationError)
 }
 
@@ -29,23 +30,23 @@ public operator fun <T> Field<T>.provideDelegate(thisRef: Any?, property: KPrope
 
 public interface SingleField<T> : Field<T> {
     public fun collection(): CollectionField<T>
-    public fun addValidator(block: (T & Any) -> ValidationError?): SingleField<T>
+    public fun addValidator(block: suspend (T & Any) -> ValidationError?): SingleField<T>
 }
 
 public interface CollectionField<T> : Field<List<T>> {
-    public fun addValidator(block: (List<T>) -> ValidationError?): CollectionField<T>
+    public fun addValidator(block: suspend (List<T>) -> ValidationError?): CollectionField<T>
 }
 
 public interface OptionalField<T : Any> : SingleField<T?> {
-    public fun required(block: () -> Boolean): OptionalField<T>
+    public fun required(block: suspend () -> Boolean): OptionalField<T>
     public fun required(): RequiredField<T>
-    public fun default(block: () -> T): RequiredField<T>
+    public fun default(block: suspend () -> T): RequiredField<T>
 }
 
 public interface RequiredField<T : Any> : SingleField<T>
 
 public interface RawField<T : Any> : OptionalField<T> {
-    public fun <U : Any> convert(block: (T) -> U): RawField<U>
+    public fun <U : Any> convert(block: suspend (T) -> U): RawField<U>
 }
 
 public fun <T : Any> RawField<T>.default(value: T): RequiredField<T> {
