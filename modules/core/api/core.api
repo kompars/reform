@@ -1,11 +1,15 @@
 public final class org/kompars/reform/BuildersKt {
-	public static final fun Form (Ljava/lang/String;Ljava/lang/String;)Lorg/kompars/reform/Form;
-	public static synthetic fun Form$default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/kompars/reform/Form;
-	public static final fun buildForm (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
+	public static final fun buildFormValues (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
 }
 
-public abstract interface class org/kompars/reform/CollectionField : org/kompars/reform/Field {
-	public abstract fun addValidator (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/CollectionField;
+public abstract interface class org/kompars/reform/CollectionField : org/kompars/reform/Field, org/kompars/reform/Validatable {
+	public abstract fun convert (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/CollectionField;
+	public abstract fun convertAll (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/CollectionField;
+	public abstract fun default (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/CollectionField;
+	public abstract fun required ()Lorg/kompars/reform/CollectionField;
+	public abstract fun required (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/CollectionField;
+	public abstract fun validateAll (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/CollectionField;
+	public abstract fun validateItem (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class org/kompars/reform/ConversionFailedException : java/lang/Exception {
@@ -14,25 +18,14 @@ public final class org/kompars/reform/ConversionFailedException : java/lang/Exce
 	public final fun getError ()Ljava/lang/String;
 }
 
-public final class org/kompars/reform/ConvertersKt {
-	public static final fun base64 (Lorg/kompars/reform/Form;Lkotlin/io/encoding/Base64;)Lorg/kompars/reform/RawField;
-	public static synthetic fun base64$default (Lorg/kompars/reform/Form;Lkotlin/io/encoding/Base64;ILjava/lang/Object;)Lorg/kompars/reform/RawField;
-	public static final fun boolean (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-	public static final fun enum (Lorg/kompars/reform/Form;Ljava/util/Map;)Lorg/kompars/reform/RawField;
-	public static final fun enum (Lorg/kompars/reform/Form;[Lkotlin/Pair;)Lorg/kompars/reform/RawField;
-	public static final fun int (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-	public static final fun long (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-	public static final fun text (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-	public static final fun textArea (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-	public static final fun uuid (Lorg/kompars/reform/Form;)Lorg/kompars/reform/RawField;
-}
-
 public final class org/kompars/reform/DuplicateFormFieldException : org/kompars/reform/FieldException {
 	public fun <init> (Lorg/kompars/reform/Form;Ljava/lang/String;)V
 }
 
 public abstract interface class org/kompars/reform/Field {
-	public abstract fun bind (Ljava/lang/String;)Lkotlin/Lazy;
+	public abstract fun getForm ()Lorg/kompars/reform/Form;
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getValue ()Ljava/lang/Object;
 }
 
 public abstract class org/kompars/reform/FieldException : org/kompars/reform/FormException {
@@ -42,28 +35,14 @@ public abstract class org/kompars/reform/FieldException : org/kompars/reform/For
 }
 
 public abstract interface class org/kompars/reform/Form {
-	public abstract fun addError (Ljava/lang/String;Lorg/kompars/reform/validation/ValidationError;)V
-	public abstract fun addValidator (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public abstract fun createField (ZLkotlin/jvm/functions/Function2;)Lorg/kompars/reform/RawField;
-	public abstract fun getErrors ()Ljava/util/Map;
-	public abstract fun getId ()Ljava/lang/String;
-	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun addError (Lorg/kompars/reform/validation/ValidationError;)V
+	public abstract fun collection (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun field (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAttributes ()Ljava/util/Map;
+	public abstract fun getErrors ()Ljava/util/List;
+	public abstract fun getFields ()Ljava/util/List;
 	public abstract fun getValues ()Ljava/util/Map;
-	public abstract fun isValid ()Z
-	public abstract fun process (Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class org/kompars/reform/Form$DefaultImpls {
-	public static synthetic fun addError$default (Lorg/kompars/reform/Form;Ljava/lang/String;Lorg/kompars/reform/validation/ValidationError;ILjava/lang/Object;)V
-	public static synthetic fun addValidator$default (Lorg/kompars/reform/Form;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-	public static synthetic fun createField$default (Lorg/kompars/reform/Form;ZLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lorg/kompars/reform/RawField;
-}
-
-public final class org/kompars/reform/FormBuilder {
-	public fun <init> ()V
-	public final fun append (Ljava/lang/String;Ljava/lang/String;)Lorg/kompars/reform/FormBuilder;
-	public final fun append (Ljava/lang/String;Ljava/util/List;)Lorg/kompars/reform/FormBuilder;
-	public final fun build ()Ljava/util/Map;
+	public abstract fun validate (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract class org/kompars/reform/FormException : java/lang/Exception {
@@ -72,18 +51,27 @@ public abstract class org/kompars/reform/FormException : java/lang/Exception {
 	public final fun getForm ()Lorg/kompars/reform/Form;
 }
 
+public final class org/kompars/reform/FormImpl : org/kompars/reform/Form {
+	public fun <init> (Ljava/util/Map;)V
+	public fun addError (Lorg/kompars/reform/validation/ValidationError;)V
+	public fun collection (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun field (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAttributes ()Ljava/util/Map;
+	public fun getErrors ()Ljava/util/List;
+	public fun getFields ()Ljava/util/List;
+	public fun getValues ()Ljava/util/Map;
+	public fun validate (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class org/kompars/reform/FormKt {
-	public static final fun addError (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;)V
-	public static synthetic fun addError$default (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;ILjava/lang/Object;)V
-	public static final fun catchError (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
-	public static final fun catchError (Lorg/kompars/reform/Form;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
-	public static synthetic fun catchError$default (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Ljava/lang/Object;
-	public static final fun default (Lorg/kompars/reform/RawField;Ljava/lang/Object;)Lorg/kompars/reform/RequiredField;
 	public static final fun provideDelegate (Lorg/kompars/reform/Field;Ljava/lang/Object;Lkotlin/reflect/KProperty;)Lkotlin/Lazy;
-	public static final fun throwError (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;Ljava/lang/Throwable;)Ljava/lang/Void;
-	public static final fun throwError (Lorg/kompars/reform/Form;Ljava/lang/String;[Lkotlin/Pair;Ljava/lang/Throwable;)Ljava/lang/Void;
-	public static synthetic fun throwError$default (Lorg/kompars/reform/Form;Ljava/lang/String;Ljava/lang/String;[Lkotlin/Pair;Ljava/lang/Throwable;ILjava/lang/Object;)Ljava/lang/Void;
-	public static synthetic fun throwError$default (Lorg/kompars/reform/Form;Ljava/lang/String;[Lkotlin/Pair;Ljava/lang/Throwable;ILjava/lang/Object;)Ljava/lang/Void;
+}
+
+public final class org/kompars/reform/FormValuesBuilder {
+	public fun <init> ()V
+	public final fun append (Ljava/lang/String;Ljava/lang/String;)Lorg/kompars/reform/FormValuesBuilder;
+	public final fun append (Ljava/lang/String;Ljava/util/List;)Lorg/kompars/reform/FormValuesBuilder;
+	public final fun build ()Ljava/util/Map;
 }
 
 public final class org/kompars/reform/InvalidFormException : org/kompars/reform/FormException {
@@ -99,35 +87,94 @@ public final class org/kompars/reform/MissingValueException : java/lang/Exceptio
 	public fun <init> ()V
 }
 
-public abstract interface class org/kompars/reform/OptionalField : org/kompars/reform/SingleField {
-	public abstract fun default (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/RequiredField;
-	public abstract fun required ()Lorg/kompars/reform/RequiredField;
-	public abstract fun required (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/OptionalField;
-}
-
 public final class org/kompars/reform/ProcessedFormException : org/kompars/reform/FormException {
 	public fun <init> (Lorg/kompars/reform/Form;)V
 }
 
-public abstract interface class org/kompars/reform/RawField : org/kompars/reform/OptionalField {
-	public abstract fun convert (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/RawField;
-}
-
-public abstract interface class org/kompars/reform/RequiredField : org/kompars/reform/SingleField {
-}
-
-public abstract interface class org/kompars/reform/SingleField : org/kompars/reform/Field {
-	public abstract fun addValidator (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/SingleField;
-	public abstract fun collection ()Lorg/kompars/reform/CollectionField;
+public abstract interface class org/kompars/reform/SingleField : org/kompars/reform/Field, org/kompars/reform/Validatable {
+	public abstract fun convert (Lkotlin/jvm/functions/Function2;)Lorg/kompars/reform/SingleField;
+	public abstract fun default (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/SingleField;
+	public abstract fun required ()Lorg/kompars/reform/SingleField;
+	public abstract fun required (Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/SingleField;
+	public abstract fun validateItem (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class org/kompars/reform/UnprocessedFormFieldException : org/kompars/reform/FieldException {
 	public fun <init> (Lorg/kompars/reform/Form;Ljava/lang/String;)V
 }
 
+public abstract interface class org/kompars/reform/Validatable {
+	public abstract fun validateItem (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class org/kompars/reform/test/AsyncConverter {
+	public abstract fun convert (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class org/kompars/reform/test/AsyncTestKt {
+	public static final fun convert1 (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun convert1 (Lorg/kompars/reform/SingleField;Lorg/kompars/reform/test/Converter;)Lorg/kompars/reform/SingleField;
 	public static final fun main (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun main ([Ljava/lang/String;)V
+	public static final fun minLength (Lorg/kompars/reform/Validatable;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun validate1 (Lorg/kompars/reform/Validatable;Lorg/kompars/reform/test/Validator;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class org/kompars/reform/test/AsyncValidator {
+	public abstract fun validate (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/kompars/reform/test/Constraint {
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;)V
+	public fun <init> (Ljava/lang/String;[Lkotlin/Pair;)V
+	public final fun getContext ()Ljava/util/Map;
+	public final fun getMessage ()Ljava/lang/String;
+}
+
+public abstract interface class org/kompars/reform/test/ConstraintAware {
+	public abstract fun getConstraint ()Lorg/kompars/reform/test/Constraint;
+}
+
+public abstract interface class org/kompars/reform/test/Converter {
+	public abstract fun convert (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/kompars/reform/test/EqualTo : org/kompars/reform/test/ConstraintAware, org/kompars/reform/test/Validator {
+	public fun <init> (Ljava/lang/Comparable;)V
+	public fun getConstraint ()Lorg/kompars/reform/test/Constraint;
+	public fun validate (Ljava/lang/Comparable;)Z
+	public synthetic fun validate (Ljava/lang/Object;)Z
+}
+
+public final class org/kompars/reform/test/IntToString : org/kompars/reform/test/Converter {
+	public static final field INSTANCE Lorg/kompars/reform/test/IntToString;
+	public fun convert (I)Ljava/lang/String;
+	public synthetic fun convert (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class org/kompars/reform/test/Kokos : org/kompars/reform/Validatable {
+	public fun <init> (Ljava/lang/Object;Ljava/util/List;)V
+	public final fun getErrors ()Ljava/util/List;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun validateItem (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/kompars/reform/test/MinLength : org/kompars/reform/test/ConstraintAware, org/kompars/reform/test/Validator {
+	public fun <init> (I)V
+	public fun getConstraint ()Lorg/kompars/reform/test/Constraint;
+	public synthetic fun validate (Ljava/lang/Object;)Z
+	public fun validate (Ljava/lang/String;)Z
+}
+
+public final class org/kompars/reform/test/StringToInt : org/kompars/reform/test/ConstraintAware, org/kompars/reform/test/Converter {
+	public static final field INSTANCE Lorg/kompars/reform/test/StringToInt;
+	public synthetic fun convert (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun convert (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getConstraint ()Lorg/kompars/reform/test/Constraint;
+}
+
+public abstract interface class org/kompars/reform/test/Validator {
+	public abstract fun validate (Ljava/lang/Object;)Z
 }
 
 public final class org/kompars/reform/validation/CollectionKt {
@@ -138,26 +185,6 @@ public final class org/kompars/reform/validation/CollectionKt {
 	public static final fun exactSize (Lorg/kompars/reform/CollectionField;I)Lorg/kompars/reform/CollectionField;
 	public static final fun maxSize (Lorg/kompars/reform/CollectionField;I)Lorg/kompars/reform/CollectionField;
 	public static final fun minSize (Lorg/kompars/reform/CollectionField;I)Lorg/kompars/reform/CollectionField;
-}
-
-public final class org/kompars/reform/validation/CommonKt {
-	public static final fun ensure (Lorg/kompars/reform/CollectionField;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/CollectionField;
-	public static final fun ensure (Lorg/kompars/reform/SingleField;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function1;)Lorg/kompars/reform/SingleField;
-	public static synthetic fun ensure$default (Lorg/kompars/reform/CollectionField;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/kompars/reform/CollectionField;
-	public static synthetic fun ensure$default (Lorg/kompars/reform/SingleField;Ljava/lang/String;[Lkotlin/Pair;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/kompars/reform/SingleField;
-}
-
-public final class org/kompars/reform/validation/ComparableKt {
-	public static final fun between (Lorg/kompars/reform/SingleField;Lkotlin/ranges/ClosedRange;)Lorg/kompars/reform/SingleField;
-	public static final fun between (Lorg/kompars/reform/SingleField;Lkotlin/ranges/OpenEndRange;)Lorg/kompars/reform/SingleField;
-	public static final fun equalTo (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun greaterOrEqualThan (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun greaterThan (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun inCollection (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun lessOrEqualThan (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun lessThan (Lorg/kompars/reform/SingleField;Lkotlin/jvm/functions/Function0;)Lorg/kompars/reform/SingleField;
-	public static final fun max (Lorg/kompars/reform/SingleField;Ljava/lang/Comparable;)Lorg/kompars/reform/SingleField;
-	public static final fun min (Lorg/kompars/reform/SingleField;Ljava/lang/Comparable;)Lorg/kompars/reform/SingleField;
 }
 
 public final class org/kompars/reform/validation/ConversionFailed : org/kompars/reform/validation/ValidationError {
@@ -182,38 +209,9 @@ public final class org/kompars/reform/validation/DefaultValueProviderFailed : or
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/kompars/reform/validation/DigitMissing : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/DigitMissing;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/kompars/reform/validation/DuplicateItems : org/kompars/reform/validation/ValidationError {
 	public static final field INSTANCE Lorg/kompars/reform/validation/DuplicateItems;
 	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/GreaterThan : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lorg/kompars/reform/validation/GreaterThan;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/GreaterThan;Ljava/lang/Object;ILjava/lang/Object;)Lorg/kompars/reform/validation/GreaterThan;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getOther ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/GreaterThanOrEqual : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lorg/kompars/reform/validation/GreaterThanOrEqual;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/GreaterThanOrEqual;Ljava/lang/Object;ILjava/lang/Object;)Lorg/kompars/reform/validation/GreaterThanOrEqual;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getOther ()Ljava/lang/Object;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -229,14 +227,6 @@ public final class org/kompars/reform/validation/InvalidCollectionItems : org/ko
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/kompars/reform/validation/InvalidEmail : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/InvalidEmail;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getREGEX ()Lkotlin/text/Regex;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/kompars/reform/validation/InvalidItemCount : org/kompars/reform/validation/ValidationError {
 	public fun <init> (I)V
 	public final fun component1 ()I
@@ -248,13 +238,6 @@ public final class org/kompars/reform/validation/InvalidItemCount : org/kompars/
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/kompars/reform/validation/InvalidPattern : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/InvalidPattern;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/kompars/reform/validation/InvalidReferencedField : org/kompars/reform/validation/ValidationError {
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -262,43 +245,6 @@ public final class org/kompars/reform/validation/InvalidReferencedField : org/ko
 	public static synthetic fun copy$default (Lorg/kompars/reform/validation/InvalidReferencedField;Ljava/lang/String;ILjava/lang/Object;)Lorg/kompars/reform/validation/InvalidReferencedField;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getField ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/InvalidUrl : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/InvalidUrl;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getREGEX ()Lkotlin/text/Regex;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/LessThan : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lorg/kompars/reform/validation/LessThan;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/LessThan;Ljava/lang/Object;ILjava/lang/Object;)Lorg/kompars/reform/validation/LessThan;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getOther ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/LessThanOrEqual : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lorg/kompars/reform/validation/LessThanOrEqual;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/LessThanOrEqual;Ljava/lang/Object;ILjava/lang/Object;)Lorg/kompars/reform/validation/LessThanOrEqual;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getOther ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/LowercaseLetterMissing : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/LowercaseLetterMissing;
-	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -317,37 +263,8 @@ public final class org/kompars/reform/validation/MoreThanOne : org/kompars/refor
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/kompars/reform/validation/NotEqual : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lorg/kompars/reform/validation/NotEqual;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/NotEqual;Ljava/lang/Object;ILjava/lang/Object;)Lorg/kompars/reform/validation/NotEqual;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getOther ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/kompars/reform/validation/NotExactlyOne : org/kompars/reform/validation/ValidationError {
 	public static final field INSTANCE Lorg/kompars/reform/validation/NotExactlyOne;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/NotInCollection : org/kompars/reform/validation/ValidationError {
-	public fun <init> (Ljava/lang/Iterable;)V
-	public final fun component1 ()Ljava/lang/Iterable;
-	public final fun copy (Ljava/lang/Iterable;)Lorg/kompars/reform/validation/NotInCollection;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/NotInCollection;Ljava/lang/Iterable;ILjava/lang/Object;)Lorg/kompars/reform/validation/NotInCollection;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCollection ()Ljava/lang/Iterable;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/NotRelativeUrl : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/NotRelativeUrl;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -356,50 +273,6 @@ public final class org/kompars/reform/validation/NotRelativeUrl : org/kompars/re
 public final class org/kompars/reform/validation/SingleValueExpected : org/kompars/reform/validation/ValidationError {
 	public static final field INSTANCE Lorg/kompars/reform/validation/SingleValueExpected;
 	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/SpecialCharacterMissing : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/SpecialCharacterMissing;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/StringKt {
-	public static final fun containsDigit (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun containsLowerCaseLetter (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun containsSpecialCharacter (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun containsUpperCaseLetter (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun email (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun matches (Lorg/kompars/reform/SingleField;Lkotlin/text/Regex;)Lorg/kompars/reform/SingleField;
-	public static final fun maxLength (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
-	public static final fun minLength (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
-	public static final fun relativeUrl (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-	public static final fun strongPassword (Lorg/kompars/reform/SingleField;I)Lorg/kompars/reform/SingleField;
-	public static synthetic fun strongPassword$default (Lorg/kompars/reform/SingleField;IILjava/lang/Object;)Lorg/kompars/reform/SingleField;
-	public static final fun url (Lorg/kompars/reform/SingleField;)Lorg/kompars/reform/SingleField;
-}
-
-public final class org/kompars/reform/validation/StringTooLong : org/kompars/reform/validation/ValidationError {
-	public fun <init> (I)V
-	public final fun component1 ()I
-	public final fun copy (I)Lorg/kompars/reform/validation/StringTooLong;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/StringTooLong;IILjava/lang/Object;)Lorg/kompars/reform/validation/StringTooLong;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getMaxLength ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/StringTooShort : org/kompars/reform/validation/ValidationError {
-	public fun <init> (I)V
-	public final fun component1 ()I
-	public final fun copy (I)Lorg/kompars/reform/validation/StringTooShort;
-	public static synthetic fun copy$default (Lorg/kompars/reform/validation/StringTooShort;IILjava/lang/Object;)Lorg/kompars/reform/validation/StringTooShort;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getMinLength ()I
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -422,13 +295,6 @@ public final class org/kompars/reform/validation/TooManyItems : org/kompars/refo
 	public static synthetic fun copy$default (Lorg/kompars/reform/validation/TooManyItems;IILjava/lang/Object;)Lorg/kompars/reform/validation/TooManyItems;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxSize ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/kompars/reform/validation/UppercaseLetterMissing : org/kompars/reform/validation/ValidationError {
-	public static final field INSTANCE Lorg/kompars/reform/validation/UppercaseLetterMissing;
-	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
